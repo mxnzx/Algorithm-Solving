@@ -1,25 +1,30 @@
 package solution;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Building {
     //팔방탐색
     public static int[] dr = {-1,1,0,0,-1,-1,1,1};
     public static int[] dc = {0,0,-1,1,-1,1,-1,1};
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws Exception {
+        System.setIn(new FileInputStream("input.txt"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int T;
-        T = sc.nextInt();
+        T = Integer.parseInt(br.readLine());
 
         for(int t=1; t<=T; t++) {
             int ans=0;
-            int n = sc.nextInt();
+            int n = Integer.parseInt(br.readLine());
             char[][] map = new char[n][n];
-
             for (int i = 0; i < n; i++) {
+                StringTokenizer st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < n; j++) {
-                    map[i][j] = sc.next().charAt(0);
+                    map[i][j] = st.nextToken().charAt(0);
                 }
             }
 
@@ -61,6 +66,5 @@ public class Building {
 
             System.out.println("#" + t + " " + ans);
         }
-        sc.close();
     }
 }
