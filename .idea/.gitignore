@@ -1,3 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/.metadata/
+/.recommenders/
+.classpath
+.gitignore
+.settings/
+
