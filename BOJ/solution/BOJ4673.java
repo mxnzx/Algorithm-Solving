@@ -9,8 +9,8 @@ public class BOJ4673 {
         selfNum[n-1] = true;
     }
 
-    //무한 수열 생성 메서드
-    static int d(int n) {
+    //n과 각 자리를 더하는 메서드
+    static void d(int n) {
         //자릿수 하나씩 떼어서 sum에 더해줌 - 순서 주의 !!! n/=10 먼저하면 n의 값이 변경됨.
         int sum = n;
         while(n>0) {
@@ -18,10 +18,8 @@ public class BOJ4673 {
             n/=10;
         }
         //sum이 지정해준 값을 넘으면 메소드 빠져나옴
-        if(sum>=val) return 0;
+        if(sum>=val) return;
         flag(sum);
-
-        return d(sum);
     }
 
     public static void main(String[] args) {
