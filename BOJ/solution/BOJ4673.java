@@ -17,7 +17,7 @@ public class BOJ4673 {
             sum+=n%10;
             n/=10;
         }
-
+        //sum이 지정해준 값을 넘으면 메소드 빠져나옴
         if(sum>=val) return 0;
         flag(sum);
 
