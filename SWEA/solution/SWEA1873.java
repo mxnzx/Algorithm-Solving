@@ -1,0 +1,143 @@
+package solution;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWEA1873 {
+    static char[][] map;
+    static int[] dr = {-1,0,1,0};
+    static int[] dc = {0,1,0,-1};
+    static int startH, startW;
+    static char startDir;
+
+    //
+    static void shooting(char currentDir, char[][]map, int currentH, int currentW) {
+        int nr, nc;
+        switch (currentDir) {
+            case '^':
+                nr = currentH + dr[0];
+                nc = currentW + dc[0];
+                //가장자리 조건 추가
+                while(map[nr][nc] != '#') {
+                    currentH = nr;
+                    currentW = nc;
+                }
+                break;
+            case '>':
+                break;
+            case 'v':
+                break;
+            case '<':
+                break;
+
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        // TODO Auto-generated method stub
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in) );
+        StringBuffer sb = new StringBuffer();
+        StringTokenizer st;
+
+        int tc = Integer.parseInt(br.readLine());
+
+        for(int t = 1; t <= tc; t++) {
+            st = new StringTokenizer(br.readLine());
+            int h = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
+
+            map = new char[h][w];
+
+            //맵 입력받기
+            for(int i=0; i < h; i++) {
+                String str = br.readLine();
+                for(int j = 0; j < w; j++) {
+                    map[h][w] = str.charAt(j);
+                    //전차 입력받으면 위치 저장해놓기
+                    if(map[h][w] == '^' || map[h][w] == 'v' ||map[h][w] == '<' ||map[h][w] == '>') {
+                        startH = h;
+                        startW = w;
+                        startDir = map[h][w];
+                    }
+                }
+            }
+            //현재 위치 초기값
+            int currentH = startH;
+            int currentW = startW;
+            char currentDir = startDir;
+
+            int n = Integer.parseInt(br.readLine());
+
+            String str = br.readLine();
+            for(int i=0; i<n; i++) {
+                //문자 하나씩 입력받으면서 처리
+                char c = str.charAt(i);
+                //가장자리 조건
+                //조건문 5개 만들기
+                int nr,nc;
+                switch(c) {
+                    //좌표 이동 나오면 움직여라 //가장자리 조건 추가
+                    case 'U':
+                        currentDir = '^';
+                        nr = currentH + dr[0];
+                        nc = currentW + dc[0];
+                        //내 위칸이 평지면 이동
+                        if(map[nr][nc] == '*') {
+                        currentH = nr;
+                        currentW = nc;
+                        }
+                        break;
+                    case 'L':
+                        currentDir = '<';
+                        nr = currentH + dr[3];
+                        nc = currentW + dc[3];
+                        //내 왼쪽이 평지면 이동
+                        if(map[nr][nc] == '*') {
+                            currentH = nr;
+                            currentW = nc;
+                        }
+                        break;
+                    case 'D':
+                        currentDir = 'v';
+                        nr = currentH + dr[2];
+                        nc = currentW + dc[2];
+                        //내 아래쪽이 평지면 이동
+                        if(map[nr][nc] == '*') {
+                            currentH = nr;
+                            currentW = nc;
+                        }
+                        break;
+                    case 'R':
+                        currentDir = '>';
+                        nr = currentH + dr[1];
+                        nc = currentW + dc[1];
+                        //내 오른쪽이 평지면 이동
+                        if(map[nr][nc] == '*') {
+                            currentH = nr;
+                            currentW = nc;
+                        }
+                        break;
+                    case 'S':
+                        //currentDir가 어디냐 -> 4개로 나눠 switch case? - 함수로 빼자
+                        //포탄 발사할 때  * 만나면 .
+                        //포탄 발사할 때 # 만나면 중지
+                        //포탄 발사할 때 나가면 다음 반복 실행
+                        shooting(currentDir, map, currentH, currentW);
+                        break;
+
+                }
+                map[currentH][currentW];
+            }
+
+            //맵 표시 - 갱신하기
+
+
+
+        }
+
+
+
+
+    }
+}
