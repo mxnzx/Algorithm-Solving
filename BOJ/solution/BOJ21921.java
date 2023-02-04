@@ -1,3 +1,5 @@
+//블로그 - 누적 합
+
 package solution;
 
 import java.io.BufferedReader;
