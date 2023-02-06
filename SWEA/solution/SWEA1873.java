@@ -1,11 +1,11 @@
-package practice;
+package solution;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Solution {
+public class SWEA1873 {
 	static char[][] map;
 	static int[] dr = { -1, 0, 1, 0 };
 	static int[] dc = { 0, 1, 0, -1 };
