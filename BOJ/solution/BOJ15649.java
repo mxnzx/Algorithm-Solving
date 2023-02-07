@@ -1,6 +1,6 @@
 /*
  * BOJ15649. N과 M (1)
- * 재귀
+ * 재귀 - 순서 있는 조합
  */
 
 package solution;
