@@ -1,5 +1,6 @@
 /*
  * n개 중에 n개를 뽑아내는 순열 문제이다. 
+ * 경우의 수 n!
  */
 package solution;
 
@@ -23,7 +24,7 @@ class Point {
 }
 
 public class SWEA1247 {
-
+	static int cnt = 0;
 	static StringBuffer sb = new StringBuffer();
 	static int Ans, T, num;
 	
@@ -48,31 +49,31 @@ public class SWEA1247 {
 			}
 			//-------------------입력------------------------------------------------------------------------
 			
+			Ans = Integer.MAX_VALUE;
 			permutation(cus, new Point[cus.length],new boolean[cus.length], 0, company, house);
 
 			sb.append("#").append(tc).append(" ").append(Ans).append("\n");
-
+			
 		}
+		System.out.println(sb);
+
 
 	}
 	private static void permutation(Point[] cus, Point[] sel, boolean[] v, int k, Point company, Point house) {
 		//  basis part
 		if(k==sel.length) {
 			
-			System.out.println(Arrays.toString(sel));
-			
-			int c = Math.abs(company.x - sel[0].x) + Math.abs(company.y- sel[0].y);
-			int h = Math.abs(sel[sel.length-1].x - house.x) + Math.abs(sel[sel.length-1].y - house.y);
+			int c = Math.abs(company.x - sel[0].x) + Math.abs(company.y- sel[0].y);		//회사 ~ 첫번째 고객 거리
+			int h = Math.abs(sel[sel.length-1].x - house.x) + Math.abs(sel[sel.length-1].y - house.y); 	//마지막 고객 ~ 집 거리
 			int sum = 0;
 			for(int i = 0; i < num-1; i++) {
-				sum += Math.abs(sel[i].x - sel[i+1].x) + Math.abs(cus[i].y- cus[i+1].y);
+				sum += Math.abs(sel[i].x - sel[i+1].x) + Math.abs(sel[i].y- sel[i+1].y);
 			}
 			Ans = Math.min(Ans, c+h+sum);
 			return;
 		}
 		
 		//  inductive part
-		
 		for (int i = 0; i < cus.length; i++) {
 			if(!v[i]) {
 				v[i] = true;
