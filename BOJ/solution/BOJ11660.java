@@ -40,16 +40,16 @@ public class BOJ11660 {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        
+
         prefixSumMap = new int[N+1][N+1];
         //1. map의 부분 합들을 구해 새로운 맵에 넣는다.
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
-            	//내가 구할 곳은 구간 합     =  내 좌표 값     +  내 위쪽에 있는 좌표 구간합의 값  + 내 왼쪽에 있는 좌표 구간합의 값 - 중복된 구간을 다시 제외
-            	prefixSumMap[i][j] = map[i][j] + prefixSumMap[i-1][j] + prefixSumMap[i][j-1] - prefixSumMap[i-1][j-1];
+                //내가 구할 곳은 구간 합     =  내 좌표 값     +  내 위쪽에 있는 좌표 구간합의 값  + 내 왼쪽에 있는 좌표 구간합의 값 - 중복된 구간을 다시 제외
+                prefixSumMap[i][j] = map[i][j] + prefixSumMap[i-1][j] + prefixSumMap[i][j-1] - prefixSumMap[i-1][j-1];
             }
         }
-        
+
 //        for (int i = 1; i <= N; i++) {
 //            for (int j = 1; j <= N; j++) {
 //            	//내가 구할 곳은 구간 합     =  내 좌표 값     +  내 위쪽에 있는 좌표 구간합의 값  + 내 왼쪽에 있는 좌표 구간합의 값 - 중복된 구간을 다시 제외
@@ -66,12 +66,12 @@ public class BOJ11660 {
             start = new Coord(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
             end = new Coord(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
 
-            int sum = 0;
-
-            
+            int sum = prefixSumMap[end.x][end.y] - prefixSumMap[start.x-1][end.y] - prefixSumMap[end.x][start.y-1] + prefixSumMap[start.x-1][start.y-1];
 
             sb.append(sum).append("\n");
         }
+        System.out.println(sb);
+        br.close();
 
     }
 }
