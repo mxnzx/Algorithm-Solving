@@ -2,7 +2,7 @@ package solution;
 
 /*
  * 5215. 햄버거 다이어트
- * 부분집합
+ * 부분집합으로 가능한 조합 전부 구하고 basis 조건에서 골라내기
  */
 
 import java.io.BufferedReader;
