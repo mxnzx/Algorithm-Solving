@@ -1,6 +1,6 @@
 /*
  * SWEA1228. 암호문1
- * 어떤 리스트에 있어서 숫자를 받으면 그 뒤로 껴넣는다 -> linkedlist
+ * 어떤 리스트에 있어서 숫자를 받으면 그 뒤로 껴넣는다 -> LinkedList
  */
 
 package solution;
@@ -28,7 +28,7 @@ public class SWEA1228_암호문1 {
 			for (int i = 1; i <= N; i++) {
 				list.add(Integer.parseInt(st.nextToken()));
 			}
-			System.out.println(list);
+			//System.out.println(list);
 
 			M = Integer.parseInt(br.readLine());
 			st = new StringTokenizer(br.readLine());
