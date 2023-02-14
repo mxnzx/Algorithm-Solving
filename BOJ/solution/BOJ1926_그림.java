@@ -2,6 +2,8 @@
  * [BOJ]1926_그림
  * BFS
  * 막힌 부분: 방문배열을 static으로 메인에 선언해 놓아야 함. bfs안에 선언하면 호출할 때마다 새로 되니까
+ * 코드 리뷰 : 방문배열처리를 main에서 if로 하고 가냐 가서 하냐 차이 - 아직까진 크게 다른 점 X - 문제따라 조정하기
+ *          Max값 처리해주는 방법 1)Math.max  2) ArrayList 배열 하나 만들고 Collections.sort()  3) if문비교
  */
 
 package solution;
