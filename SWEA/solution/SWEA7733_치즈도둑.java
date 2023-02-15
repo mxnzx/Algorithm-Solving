@@ -1,6 +1,6 @@
 /*
  * [SWEA]7733. 치즈도둑
- * 
+ *
  */
 
 package solution;
@@ -11,72 +11,91 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class SWEA7733_치즈도둑 {
-	static int T, N, X, max;
+	static int T, N, max, cnt;
 	static int[][] cheese;
-	static boolean[][] eaten;
-	static int day = 1;		//지난 날 수
+	static boolean[][] eaten, v;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
-		
+
 		T = Integer.parseInt(br.readLine());
-		
+
 		for (int tc = 1; tc <= T; tc++) {
 			N = Integer.parseInt(br.readLine());
 			cheese = new int[N][N];
-			eaten = new boolean[N][N];
+			eaten = new boolean[N][N];  //먹었는지
+			v = new boolean[N][N];		//방문배열
 			max=0;
-			day=1;
-			
+
 			for (int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < N; j++) {
 					cheese[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
-			
-			dfs(0,0,0);
 
-			
+
+			for (int d = 0; d <= 100; d++) {
+				cnt=0;
+				//해당 일수가 적힌 치즈 부분을 먹었다고 처리
+				for (int i = 0; i < N; i++) {
+					for (int j = 0; j < N; j++) {
+						if(d == cheese[i][j]) {
+							eaten[i][j] = true;
+						}
+					}
+				}
+				//방문도 하지 않았고, 먹히지 않은 곳을 탐색
+				for (int i = 0; i < N; i++) {
+					for (int j = 0; j < N; j++) {
+						if (!v[i][j] && !eaten[i][j]) {
+							dfs(i,j);
+							cnt++;
+						}
+					}
+				}
+				max = Math.max(max, cnt);
+
+			}
+
+
+			sb.append("#" + tc + " " + max + "\n");
+
 		}
-		
+		System.out.println(sb);
+		br.close();
 	}
 	static int[] dr = {-1,1,0,0};
 	static int[] dc = {0,0,-1,1};
-	static int cnt;	//덩어리 개수
 
-	//날짜가 지날수록 먹어진 치즈부분이 누적됨
-	private static void dfs(int r, int c, int cnt) {
-		
-		
-		//basis part
-		//다먹혔으면 리턴한다
-		if() {
-			return;
+	private static class Point {
+		int r,c;
+
+		public Point(int r, int c) {
+			this.r = r;
+			this.c = c;
 		}
-		
-		//inductive part
-		
-		//해당 일수가 적힌 치즈 부분을 먹었다고 처리
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if(day == cheese[i][j])
-					eaten[i][j] = true;
+	}
+
+	//날짜가 지날수록 먹어진 치즈부분이 누적됨 - 구현: 스택
+	private static void dfs(int r, int c) {
+
+		v[r][c] = true;
+		Point p = new Point(r,c);
+
+
+			for (int d = 0; d < 4; d++) {
+				int nr = p.r + dr[d];
+				int nc = p.c + dc[d];
+
+				if (nr >= 0 && nr < N && nc >= 0 && nc < N && !v[nr][nc] && !eaten[nr][nc]) {
+					dfs(nr,nc);
+				}
 			}
-		}
-		
-		for (int d = 0; d < 4; d++) {
-			int nr = r + dr[d];
-			int nc = c + dc[d];
-			
-			//가장자리 조건
-			if(nr>=0 && nr<N && nc>=0 && nc<N && !eaten[nr][nc]) {
-				//어젠 한 트리의 level 세어주기 ...
-			}
-		}
-		
+
+
 	}
 
 }
