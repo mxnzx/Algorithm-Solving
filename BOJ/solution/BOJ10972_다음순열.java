@@ -1,8 +1,5 @@
 /*
- * N개중에 2개를 골라 값을 계산 그들(nC2개)끼리 짝지어 차를 구해서, 가장 작은 차를 정답으로 출력한다
- * 아니고.
- * N개 중에 N/2개를 골라 값을 계산
- * 하고 둘씩 짝지어서 둘 중 작은 차 정답
+
  */
 package solution;
 
@@ -14,86 +11,78 @@ import java.util.StringTokenizer;
 
 public class BOJ10972_다음순열 {
 
-	static int T, N, Ans;
-	static int[][] map;
-	static int[] s;
+	static int N;
+	static int[] input;
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
 
-		T = Integer.parseInt(br.readLine());
+		N = Integer.parseInt(br.readLine());
+		input = new int[N];
 
-		for (int tc = 1; tc <= T; tc++) {
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			input[i] = Integer.parseInt(st.nextToken());
+		}
 
-			N = Integer.parseInt(br.readLine());
-			map = new int[N + 1][N + 1];
-			s = new int[N]; // 내가 고른 식재료 배열
-			Ans = Integer.MAX_VALUE;
-			for (int i = 1; i <= N; i++) {
-				st = new StringTokenizer(br.readLine());
-				for (int j = 1; j <= N; j++) {
-					map[i][j] = Integer.parseInt(st.nextToken());
-				}
+		//이미 내림차순으로 정렬되어있으면 -1 출력하게 flag 줌
+		boolean flag = true;
+		for (int i = 1; i < N; i++) {
+			if(input[i-1] >= input[i]) continue;
+
+			flag = false;
+			break;
+		}
+
+		if(!flag) {
+			//오름차순 정렬 전처리
+			//Arrays.sort(input);
+			np(input);
+			//System.out.println(Arrays.toString(input));
+			for (int i :
+					input) {
+				sb.append(i + " ");
 			}
-			for (int i = 0; i < N; i++) {
-				s[i] = i + 1;
-			}
-			int num = N / 2; // 재료 조합 개수
-
-			//
-			comb(new int[num], 0, 0);
-
-			System.out.println(Arrays.toString(s));
-
-			// 시너지 배열을 가운데 기준으로 2로 나누고 맨 바깥부터 짝짓는다. 그럼 nC2/2 개 중에서 최소값을 고르면 됨.
-			for (int i = 0; i < s.length / 2; i++) {
-				int sub = Math.abs(s[i] - s[s.length - 1 - i]);
-				System.out.println(sub);
-				Ans = Math.min(Ans, sub);
-			}
-
-			sb.append("#" + tc + " " + Ans + "\n");
+		} else {
+			sb.append(-1);
 		}
 		System.out.println(sb);
 		br.close();
 
-	}
-
-	private static void comb(int[] sel, int idx, int k) {
-
-		if (k == sel.length) {
-			// 각각 뽑은 수로 시너지의 합을 구한다. e.g. [1,2,3] -> map[1][2] + map[2][1] + map[1][3] +
-			// map[3][1] + map[2][3] + map[3][2]
-			// 여기서 뽑은 수로 순열 ?
-			perm(sel, new int[2], 0, 0);
-			
-			return;
-		}
-		for (int i = idx; i < s.length; i++) {
-			sel[k] = s[i];
-			comb(sel, i + 1, k + 1);
-		}
 
 	}
+	private static boolean np(int[] input) {
 
-	// 고른 두개를 가지고 순열을 만든다
-	private static void perm(int[] og, int[] sel, int idx, int flag) {
-		
-		if(idx == sel.length) {
-			int a = map[sel[0]][sel[1]] + map[sel[1]][sel[0]];
-			//System.out.println(Arrays.toString(sel));
-			return;
-		}
-		
-		for (int i = 0; i < og.length; i++) {
-			if((flag & (1<<i)) != 0) continue;
-			sel[idx] = og[i];
-			perm(og, sel, idx+1, flag|(1<<i));
-			
-		}
+		int n = input.length;
+
+		//1. 뒤쪽부터 꼭대기를 찾는다.
+		int i = n - 1;
+		while(i>0 && input[i] <= input[i-1]) i--;
+		if(i == 0) return false;
+
+		//2. 꼭대기 바로 앞자리와 그 자리값보다 한단계 큰 자리를 수를 뒤부터 찾는다
+		int j = n - 1;
+		while(input[i-1] >= input[j]) j--;
+
+		//3. 꼭대기 바로 앞자리와 그 자리값보다 한단계 큰 자리를 수와 교환한다.
+		swap(input, i-1, j);
+
+		//4. 꼭대기부터 맨 뒤까지 오름차순으로 정렬한다
+		int k = n - 1;
+		while(i<k)
+			swap(input, i++, k--);
+
+		return true;
 	}
+
+	private static void swap(int[] arr, int a, int b){
+		int tmp = arr[a];
+		arr[a] = arr[b];
+		arr[b] = tmp;
+	}
+
+
 
 }
