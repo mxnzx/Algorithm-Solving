@@ -1,22 +1,19 @@
 /*
  * [BOJ]15686. 치킨배달
- * 조합 + BFS
+ * 1. 조합 + BFS 으로 풀었다가(main2) 시간&메모리 둘다 남들의 10배씩 걸려서 다른 방법을 찾아보았다
+ * 2. 값을 받아올 때 치킨집과 집의 좌표를 미리 받아 리스트를 만들어놓고, 조합으로 M개의 치킨집을 만들고 백트래킹을 통한 완전탐색을 통해 모든 경우를 구해보는게 더 빠름
  */
 package solution;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class BOJ15686_치킨배달 {
 
     static int N, M, cur, Ans;  //cur: 조합나누어서 풀어야할 때 나오는 임의의 도시의 치킨 거리들.  Ans: 최종
     static int[][] map;
-    static boolean[][] v;
 
     static class Point {
         int r, c;
@@ -35,10 +32,78 @@ public class BOJ15686_치킨배달 {
         }
     }
 
+    static ArrayList<Point> chickenList = new ArrayList<>();    //치킨집 위치를 저장하는 리스트
+    static ArrayList<Point> houseList = new ArrayList<>();      //집의 위치를 저장하는 리스트
+    static boolean[] chickenV;
+
+    //백트래킹 + 조합
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());   //가장 수익을 많이 낼 치킨집 개수 최대 M
+
+        map = new int[N][N];
+        Ans = Integer.MAX_VALUE;
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < N; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+                //받으면서 1,2값이면   치킨집, 집을 카운트
+                if (map[i][j] == 1) houseList.add(new Point(i, j));
+                if (map[i][j] == 2) chickenList.add(new Point(i, j));
+            }
+        }
+        chickenV = new boolean[chickenList.size()];
+        backtracking(0,0);  //m개의 치킨집을 뽑는다.
+        System.out.println(Ans);
+
+    }
+
+    //idx: 원본 리스트 인덱스.  k: 선택한 인덱스
+    //완전 탐색 브루트포스
+    private static void backtracking(int idx, int k) {
+        //M개의 치킨집을 골랐으면,
+        if(k==M) {
+            int total = 0;   //도시의 치킨거리
+            //집의 좌표값을 알고 있으므로 그 집들을 하나씩 고른다
+            for (int i = 0; i < houseList.size(); i++) {
+                int sum = Integer.MAX_VALUE;
+                for (int j = 0; j < chickenList.size(); j++) {
+                    //치킨집 좌표 리스트를 돌다가 골라놓은 M개의 중 하나의 치킨집이라면 거리를 구해준다
+                    if(chickenV[j]) {
+                        int dist = Math.abs(houseList.get(i).r - chickenList.get(j).r)
+                                 + Math.abs(houseList.get(i).c - chickenList.get(j).c);
+                        //치킨집과의 거리중에 가장 짧은 거리를 도시의 치킨 거리를 구할 때 더해줄 것이다.
+                        sum = Math.min(sum,dist);
+                    }
+                }
+                total += sum;
+
+            }
+            //구해놓은 도시의 치킨 거리중에 가장 작은 값을 출력한다.
+            Ans = Math.min(total, Ans);
+            return;
+        }
+
+        //치킨집 m개를 뽑는다
+        for (int i = idx; i < chickenList.size(); i++) {
+            if(!chickenV[i]) {
+                chickenV[i] = true;
+                backtracking(i+1, k+1);
+                chickenV[i] = false;
+            }
+        }
+    }
+
+    //=========================== 원래 풀었던 조합 + BFS 방식 =====================================
+    static boolean[][] v;
     static int[] dr = {-1, 1, 0, 0};
     static int[] dc = {0, 0, 1, -1};
-
-    public static void main(String[] args) throws IOException {
+    public static void main2(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
