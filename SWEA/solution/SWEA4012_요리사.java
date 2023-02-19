@@ -1,24 +1,23 @@
 /*
- * N개 중에 N/2개를 골라 각각 값을 계산 -> 조합에 다음순열을 사용해서 두 그룹으로 나누자
- * 하고 둘 중 작은 차 정답
+ * [SWEA]4012. 요리사
+ * 순열을 이용해서 식재료를 두 그룹으로 나누어줌. -> 이때 next permutation을 사용했지만 그냥 조합을 이용해 두 그룹을 나누어도 된다.
+ *
+ *
  */
 package solution;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class SWEA4012_요리사 {
 
 	static int T, N, Ans;
 	static int[][] map;
-	static int[] s;
 	static int[] check;
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
@@ -30,7 +29,6 @@ public class SWEA4012_요리사 {
 			N = Integer.parseInt(br.readLine());
 			map = new int[N][N];
 			check = new int[N]; // 식재료 체크 배열
-			s = new int[N]; // 내가 고른 식재료 배열
 			Ans = Integer.MAX_VALUE;
 			for (int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
@@ -39,62 +37,30 @@ public class SWEA4012_요리사 {
 				}
 			}
 
-			// 식재료 체크를 두 그룹으로 나누는 작업
+			// 식재료 체크를 두 그룹으로 나누는 작업 - next permutation
 			// 체크 배열에 뒤 3개에 1을 넣어준다
-			for (int i = N / 2; i < N; i++) {
-				check[i] = 1;
-			}
-			int sumA = 0;
-			int sumB = 0;
+			for (int i = N / 2; i < N; i++) check[i] = 1;
+
 			do {		//0 0 0 1 1 1
 				//System.out.println(Arrays.toString(check));
 				//여기서 1인 애들과 0인 애들을 나누어 그룹을 더해준다.
+				int sumA = 0;
+				int sumB = 0;
 				for (int i = 0; i < check.length; i++) {
 					for (int j = 0; j < check.length; j++) {
-						//조건 하나 더 필요   4 5
-						if(i != j && check[i] == 1 && check[j] == 1) {
-							sumA += map[i][j] + map[j][i];
-							System.out.println("A" + " " + i + " " + j);
-						}
-						
+						if(check[i] == 1 && check[j] == 1) { sumA += map[i][j]; }
+						if(check[i] == 0 && check[j] == 0) { sumB += map[i][j]; }
 					}
 				}
-				int sub = Math.abs(sumA-sumB);
-				System.out.println(sumA + " " + sumB);
-				Ans = Math.min(sub, Ans);
-				sumA=0;
-				sumB=0;
-				
+				int flavor = Math.abs(sumA-sumB);
+				Ans = Math.min(Ans, flavor);
 				
 			} while(np(check));
 
-			sb.append("#" + tc + " " + Ans + "\n");
+			sb.append("#").append(tc).append(" ").append(Ans).append("\n");
 		}
 		System.out.println(sb);
 		br.close();
-
-	}
-
-	/*
-	 * idx: check배열 인덱스 cnt: 선택한 cnt
-	 */
-	private static void per(int idx, int cnt, boolean[] v) { // 0 0 0 0 0 0
-
-		// basis part
-		// 둘 다 뽑은 경우
-		if (cnt == check.length / 2) {
-			System.out.println(Arrays.toString(check));
-			return;
-		}
-
-		// inductive part
-		for (int i = 0; i < check.length; i++) {
-
-			check[idx] = 1;
-			per(idx + 1, cnt + 1, v);
-			per(idx + 1, cnt, v);
-			v[i] = false;
-		}
 
 	}
 
