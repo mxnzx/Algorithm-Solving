@@ -1,4 +1,4 @@
-/*
+/* [BOJ]1992. 쿼드트리
  * 쪼개고 쪼개서 봐야할 것 같음 -> 분할정복? 
  */
 
@@ -41,20 +41,20 @@ public class BOJ1992_쿼드트리 {
 				sum += map[i][j];
 			}
 		}
-		
-		
-		
+
+		//모든 구간이 1일 때 -> 1을 출력
 		if(sum == size * size) {
 			sb.append(1);
 			
-			
-			
+
+		//모든 구간이 0 일때 -> 0을 출력
 		} else if( sum == 0) {
 			sb.append(0);
 			
 			
 		} else {
 			int half = size / 2;
+			//한번 더 나눠야할 경우 괄호를 씌우고 다시 나눈다
 			sb.append("(");
 			cut(r, c, half);
 			cut(r, c+half, half);
