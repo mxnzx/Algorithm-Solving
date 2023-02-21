@@ -7,9 +7,6 @@ package solution;
 
 import java.util.Scanner;
 
-import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
-
-import sun.print.PSPrinterJob.PluginPrinter;
 
 public class BOJ9663_NQueen {
 	
