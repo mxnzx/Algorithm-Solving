@@ -36,20 +36,66 @@ public class BOJ16457_단풍잎이야기 {
             if(key[i]>0)
                 list.add(i);
         }
-        pick(new int[n],0,0);
+        
+        
+        
+        if(list.size()>n) {
+        	pick(new int[n],0,0);
+        	
+        } else {
+        	Ans = m;
+        }
+        //pick2(new int[n],1, 0);
         //출력
         System.out.println(Ans);
 
     }
 
-    private static void pick(int[] sel, int idx, int v) {
+    //idx: 원소값. k:뽑은 개수
+    //다 뽑는 경우
+    private static void pick2(int[] sel, int idx, int k) {
+    	
+    	if(k == sel.length) {
+    		//System.out.println(Arrays.toString(sel));
+    		boolean[] v = new boolean[2*n+1];
+    		for (int i : sel) {
+				v[i] = true;
+			}
+    		int cnt = 0;
+    		for (int i = 0; i < m; i++) {
+    			int tmpCnt = 0;
+				for (int j = 0; j < k; j++) {
+					System.out.println(arr[i][j]);
+					if(v[arr[i][j]]) tmpCnt++;
+				}
+				if(tmpCnt == k) cnt++;
+			}
+    		Ans = Math.max(Ans, cnt);
+    		return;
+    	}
+    	
+    	//다 돌았는데 끝났으면 리턴
+    	if(idx == 2*n+2) {
+    		return;
+    	}
+    	
+    	//조합 생성
+    	for(int i = idx; i<2*n+1; i++) {
+    		sel[k] = i;
+    		pick2(sel, i+1, k+1);
+    	}
+
+		
+	}
+
+	private static void pick(int[] sel, int idx, int v) {
 
 
         if(v == sel.length) {
             //퀘스트 수행 개수 비교 -> 퀘스트를 몇개까지 클리어 할 수 있는지 방문배열로 체크
             //System.out.println(Arrays.toString(sel));
             //조합으로 데려온 애들만 방문배열 true
-            boolean[] visited = new boolean[2*n+1];
+            boolean[] visited = new boolean[2*n+1]; 
             for (int i: sel) {
                 visited[i] = true;
             }
@@ -70,7 +116,7 @@ public class BOJ16457_단풍잎이야기 {
         }
         //더 이상 고를 값이 없을 경우
         if(idx == list.size()) {
-            System.out.println(Arrays.toString(sel));
+            //System.out.println(Arrays.toString(sel));
             return;
         }
 
