@@ -12,8 +12,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-import sun.awt.util.IdentityLinkedList;
-
 public class BOJ4963_섬의개수 {
 
     static int w,h;
