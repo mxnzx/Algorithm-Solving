@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+import sun.awt.util.IdentityLinkedList;
+
 public class BOJ4963_섬의개수 {
 
     static int w,h;
@@ -54,7 +56,29 @@ public class BOJ4963_섬의개수 {
         System.out.println(sb);
         br.close();
     }
-    static int[] dr = {-1,-1,-1,0,1,1,1,0};
+    private static void bfs(int r, int c) {
+		Queue<Point> q = new LinkedList<>();
+		q.offer(new Point(r, c));
+		v[r][c] = true;
+		
+		while(!q.isEmpty()) {
+			
+			Point p = q.poll();
+			
+			for (int d = 0; d < 8; d++) {
+				int nr = p.r + dr[d];
+				int nc = p.c + dc[d];
+				
+				if(nr>=0 && nr<h && nc>=0 && nc<w && map[nr][nc] == 1 && !v[nr][nc]) {
+					v[nr][nc] = true;
+					q.offer(new Point(nr, nc));
+				}
+			}
+		}
+    	
+    	
+	}
+	static int[] dr = {-1,-1,-1,0,1,1,1,0};
     static int[] dc = {-1,0,1,1,1,0,-1,-1};
 
     static class Point {
@@ -66,28 +90,7 @@ public class BOJ4963_섬의개수 {
             this.c = c;
         }
     }
+    
 
-    private static void bfs(int r, int c) {
-        Queue<Point> q = new LinkedList<>();
-        q.offer(new Point(r,c));
-        v[r][c] = true;
-        map[r][c] = 0;
-
-        while (!q.isEmpty()) {
-            Point p = q.poll();
-
-            for (int d = 0; d < 8; d++) {
-                int nr = p.r + dr[d];
-                int nc = p.c + dc[d];
-
-                if(nr >= 0 && nr < h && nc >= 0 && nc < w && !v[nr][nc] && map[nr][nc] == 1 ) {
-                    q.offer(new Point(nr,nc));
-                    v[nr][nc] = true;
-                    map[r][c] = 0;
-                }
-
-            }
-        }
-
-    }
+   
 }

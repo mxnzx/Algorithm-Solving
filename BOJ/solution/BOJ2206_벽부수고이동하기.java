@@ -89,8 +89,8 @@ public class BOJ2206_벽부수고이동하기 {
 					 v[nr][nc][npuk] = true;
 					 q.offer(new Loc(nr,nc,p.cnt+1,npuk));
 				 }
-				//벽을 부수고 이동하는 경우 v[nr][nc][npuk] 의 방문유무를 체크할 필요가 왜 없지? 어차피 1이라서 못갔을 것이기 때문에?
-				 else if(map[nr][nc] == 1 && !v[nr][nc][npuk] && npuk == 0) {
+				//벽을 부수고 이동하는 경우 v[nr][nc][npuk] 의 방문유무를 체크할 필요가 왜 없지? 어차피 1이라서 못갔을 것이기 때문에? ㅇㅇ
+				 else if(map[nr][nc] == 1 && npuk == 0) { 
 					 v[nr][nc][1] = true;
 					 q.offer(new Loc(nr,nc,p.cnt+1,1));
 				 }
