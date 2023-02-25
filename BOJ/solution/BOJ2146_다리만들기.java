@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
 
 public class BOJ2146_다리만들기 {
 	
-	static int N, tmp=0, Ans = Integer.MAX_VALUE;
+	static int N, Ans = Integer.MAX_VALUE;
 	static int[][] map;
 	static boolean[][] v;
 	static boolean[][] v2;
@@ -74,6 +74,8 @@ public class BOJ2146_다리만들기 {
 		//가장 짧은 다리의 출력 - BFS? 
 		//1을 찾고 더이상 못갈때까지 가다가 -> 거기부터 1씩 늘리면서 카운트 -> BFS 두개?
 		//그 이후에 1을 만나면 종료
+
+		//섬의 영역을 지도에 표시하기 위한 탐색. 섬을 각각 2,3,4로 바꾸어줌
 		int iNum = 2;
 		for (int r = 0; r < N; r++) {
 			for (int c = 0; c < N; c++) {
@@ -110,19 +112,16 @@ public class BOJ2146_다리만들기 {
 			for (int d = 0; d < 4; d++) {
 				int nr = p.r + dr[d];
 				int nc = p.c + dc[d];
-
-
 				//영역 밖이거나 or 다음 갈 좌표가 내가 출발한 곳과 값이 같거나(=같은 섬이거나) or 이미 방문을 했다면 패스
 				if(nr<0 || nr>=N || nc<0 || nc>=N || map[nr][nc] == start.islandNum || v2[nr][nc]) continue;
 
-				
 				//바다도 아닌데 다른 넘버의 섬을 만나면 끝!
 				if(map[nr][nc] > 1 && map[nr][nc] != start.islandNum) {
 					//현재 내 카운트와 최종값을 비교해서 작은 값을 뺀다
 					Ans = Math.min(Ans, p.cnt);
 					return;
 				}
-				
+
 				//다음이 아직 바다면 킵고잉
 				if(map[nr][nc] == 0) {
 					//방문처리해주고
@@ -145,7 +144,8 @@ public class BOJ2146_다리만들기 {
 		
 		while (!q.isEmpty()) {
 			Point p = q.poll();
-			
+
+			boolean flag = false;
 			for (int d = 0; d < 4; d++) {
 				int nr = p.r + dr[d];
 				int nc = p.c + dc[d];
@@ -159,8 +159,11 @@ public class BOJ2146_다리만들기 {
 					q.offer(new Point(nr, nc));
 				} else {	//더이상 갈 수 있는 곳이 없다면
 					//체크할 Point리스트에 넣는다.
-					//이미 들어갔는지 확인하고 넣어야하나? 일단 다 넣고 처리할때 걸러주자. 리스트에 넣을때 내 섬의 넘버 같이 넣어주기
-					list.add(new Point(p.r, p.c, 0, islandNum));
+					//이미 들어갔는지 확인하고 넣어준다. => flag (같은 섬의 가장자리 중복 방지)
+					if(!flag) {
+						list.add(new Point(p.r, p.c, 0, islandNum));
+						flag = true;
+					}
 					//System.out.println(list);
 				}
 				
