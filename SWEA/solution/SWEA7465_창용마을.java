@@ -34,7 +34,7 @@ public class SWEA7465_창용마을 {
 			for (int i = 1; i <= N; i++) {
 				parents[i] = i;
 			}
-			
+			//서로소 집합 - union - find
 			for (int i = 0; i < M; i++) {
 				st = new StringTokenizer(br.readLine());
 				int a = Integer.parseInt(st.nextToken());
