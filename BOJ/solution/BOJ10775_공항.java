@@ -28,8 +28,6 @@ public class BOJ10775_공항 {
 			
 		}
 		System.out.println(Arrays.toString(parents));
-		
-
 	}
 
 	private static void union(int i, int current) {
