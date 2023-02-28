@@ -12,13 +12,8 @@ public class BOJ2960_에라토스테네스의체 {
         K = sc.nextInt();
         v = new boolean[N+1];  //인덱스 2~N까지 사용할것임
 
-        recur(2);
+        
 
     }
-    private static void recur(int num) {
 
-        while( % num == 0) {
-            v[]
-        }
-    }
 }
