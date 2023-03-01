@@ -3,10 +3,7 @@ package solution;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 public class BOJ1197_최소스패닝트리 {
@@ -30,7 +27,7 @@ public class BOJ1197_최소스패닝트리 {
 	
 	static int V,E;
 	static ArrayList<Vertex>[] adjList;
-	static int[] dist;
+	static long[] dist;
 	static boolean[] v;
 	
 	public static void main(String[] args) throws IOException {
@@ -40,12 +37,14 @@ public class BOJ1197_최소스패닝트리 {
 		st = new StringTokenizer(br.readLine());
 		V = Integer.parseInt(st.nextToken());
 		E = Integer.parseInt(st.nextToken());
+
 		
 		//인접리스트 생성
 		adjList = new ArrayList[V+1];
-		for (int i = 1; i <= adjList.length; i++) {
+		for (int i = 0; i < adjList.length; i++) {
 			adjList[i] = new ArrayList<>();
 		}
+
 		for (int i = 0; i < E; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
@@ -56,25 +55,41 @@ public class BOJ1197_최소스패닝트리 {
 		}
 		
 		//정점배열
-		dist = new int[V+1];
+		dist = new long[V+1];
 		//1. 정점배열값을 무한대로
 		Arrays.fill(dist, Integer.MAX_VALUE);
 		//방문배열
-		v = new boolean[V];
+		v = new boolean[V+1];
 
-		//2. 임의의 정점 선택
-		dist[0] = 0;
-		//3. 선택한 정점과 인접한 정점들의 값을 찾아 정점배열에 업뎃한다 => V-1번
-		for (int i = 0; i < V-1; i++) {
-			//방문하지 않은 정점 중에서 최소비용 정점을 찾는다
-			int minIdx = -1;
-			int minDist = Integer.MAX_VALUE;
+		//2. 임의의 정점 선택(1번부터)
+		dist[1] = 0;
+
+		//3. 비용이 최솟값인 정점을 찾기 위해 priorityQueue를 생성
+		PriorityQueue<Vertex> q = new PriorityQueue<>();
+		//3-1. 시작점을 큐에 넣는다
+		q.add(new Vertex(1,0));
+
+		long sum = 0;
+		//3-2. 큐가 빌때까지 하나씩 빼면서 최소 정점을 찾아 정점배열에 업뎃한다
+		while(!q.isEmpty()) {
+			//거리가 가장 작은 점을 poll한다
+			//p: 시작정점
+			Vertex p = q.poll();
+
+			if(!v[p.to]) {
+				v[p.to] = true;
+				sum += p.weight;
+				//ver : 도착정점
+				for(Vertex ver : adjList[p.to]) {
+					if(!v[ver.to] && ver.weight < dist[ver.to]) {
+						dist[ver.to] = ver.weight;
+						q.add(ver);
+					}
+				}
+			}
 		}
-		
-		
-		
-		System.out.println(sum);
 
+		System.out.println(sum);
 	}
 
 	
