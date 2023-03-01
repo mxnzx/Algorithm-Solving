@@ -1,6 +1,6 @@
 /*
  * [SWEA]3124. 최소스패닝트리
- * MST - 크루스칼 알고리즘 
+ * MST - 크루스칼 알고리즘, 프림알고리즘
  * 놓친 부분: 테케 바뀔때 초기화 안해줌. 데이터 타입 !!!! 주의 하좌 ... 
  */
 
@@ -9,14 +9,11 @@ package solution;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class SWEA3124_최소스패닝트리 {
 	
-	static class Vertex {
+	static class Vertex implements Comparable<Vertex>{
 		int e;
 		long c;
 
@@ -25,8 +22,11 @@ public class SWEA3124_최소스패닝트리 {
 			this.e = e;
 			this.c = c;
 		}
-		
-		
+
+		@Override
+		public int compareTo(Vertex o) {
+			return Long.compare(this.c, o.c);
+		}
 	}
 	static int T,V,E;
 	static ArrayList<Vertex>[] adjList;
@@ -46,11 +46,11 @@ public class SWEA3124_최소스패닝트리 {
 			
 			//인접리스트 구현
 			adjList = new ArrayList[V+1];
-			for (int i = 0; i < adjList.length; i++) {
+			for (int i = 1; i <= V; i++) {
 				adjList[i] = new ArrayList<>();
 			}
 			//값을 넣어준다
-			for (int i = 1; i <= E; i++) {
+			for (int i = 0; i < E; i++) {
 				st = new StringTokenizer(br.readLine());
 				int a = Integer.parseInt(st.nextToken());
 				int b = Integer.parseInt(st.nextToken());
@@ -65,33 +65,26 @@ public class SWEA3124_최소스패닝트리 {
 			v = new boolean[V+1];
 			
 			//0번부터 시작해보자
-			dist[0] = 0;
-			
-			//선택한 정점과 인접한 정점들의 값을 찾아서 정점배열에 업데이트한다 => V-1번 반복한다
-			for (int cnt = 0; cnt < V-1; cnt++) {
-				//방문하지 않은 정점 중 최소비용의 정점을 찾는다
-				int minIdx = -1;
-				long minDist = Integer.MAX_VALUE;
-				for (int i = 1; i <= V; i++) {
-					if(!v[i] && dist[i] < minDist) {
-						minIdx = i;
-						minDist = dist[i];
+			dist[1] = 0;
+
+			PriorityQueue<Vertex> q = new PriorityQueue<>();
+			q.add(new Vertex(1,0));
+
+			long sum = 0;
+			while (!q.isEmpty()) {
+				Vertex p = q.poll();
+
+				if(!v[p.e]) {
+					v[p.e] = true;
+					sum += p.c;
+					for(Vertex ver : adjList[p.e]) {
+						if(!v[ver.e] && ver.c < dist[ver.e]) {
+							dist[ver.e] = ver.c;
+							q.add(ver);
+						}
 					}
 				}
-				System.out.println(minIdx);
-				//값이 바뀌었다면 방문처리
-				v[minIdx] = true;
-				
-				//minIdx정점과 연결된 정점들을 찾아 업데이트 한다.
-				//minIdx: 출발정점
-				for(Vertex vt : adjList[minIdx]) {
-					if(!v[vt.e] && vt.c < dist[vt.e]) dist[vt.e] = vt.c;
-				}
-				
-			}
-			long sum = 0;
-			for(int i=1;i <= dist.length;i++) {
-				sum += dist[i];
+
 			}
 			
 			sb.append("#").append(tc).append(" ").append(sum).append("\n");
