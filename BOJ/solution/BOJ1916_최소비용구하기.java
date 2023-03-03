@@ -1,3 +1,9 @@
+/*
+ * [BOJ]1916. 최소비용구하기
+ * 다익스트라 우선순위큐로 구현하기. 로직 잘 알자!!!!!!!!!!!!!!
+ * 
+ */
+
 package solution;
 
 import java.io.BufferedReader;
