@@ -1,3 +1,7 @@
+/*
+ * [BOJ]2178. 미로탐색 - bfs
+ * 놓친 부분: bfs는 자기의 cnt를 가지고 다녀야 하므로 객체에 담아주어야 한다
+ */
 package solution;
 
 import java.io.BufferedReader;
