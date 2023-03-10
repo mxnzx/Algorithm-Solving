@@ -1,6 +1,6 @@
 /*
- * BOJ2644_촌수계산
- * bfs - level구하기?
+ * [BOJ]2644. 촌수계산
+ * bfs - 시작점~목적지 최단 거리 구하기
  */
 package solution;
 
@@ -24,7 +24,6 @@ public class BOJ2644_촌수계산 {
 		}
 		
 	}
-	static boolean flag = false;
 	static int n,m,start,end;
 	static ArrayList<Integer>[] adjList;
 	static boolean[] v;
@@ -40,7 +39,7 @@ public class BOJ2644_촌수계산 {
 		v=new boolean[n+1];
 		adjList = new ArrayList[n+1];
 		for (int i = 1; i <= n; i++) {
-			adjList[i] = new ArrayList<Integer>();
+			adjList[i] = new ArrayList<>();
 		}		
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -50,30 +49,31 @@ public class BOJ2644_촌수계산 {
 			adjList[from].add(to);
 			adjList[to].add(from);
 		}
-		bfs();
-		if(!flag) System.out.println(-1);
-
+		System.out.println(bfs());
 	}
-	private static void bfs() {
-		
+	private static int bfs() {
 		Queue<Vertex> q = new LinkedList<>();
 		q.add(new Vertex(start, 0));
-		
+		v[start]=true;
+		boolean flag=false;	//도착점에 도착 여부 flag
 
 		while(!q.isEmpty()) {
 			Vertex p = q.poll();
-			v[p.ver] = true;
-			
+
 			if(p.ver == end) {
-				System.out.println(p.cnt);
 				flag=true;
-				return;		
+				return p.cnt;
 			}
 			for(int next:adjList[p.ver]) {
-				q.add(new Vertex(next, p.cnt+1));
-				
+				if(!v[next]){
+					v[next]=true;
+					q.add(new Vertex(next, p.cnt+1));
+				}
 			}		
 		}
+		if(!flag) return -1;
+
+		return 0;
 	}
 	
 
