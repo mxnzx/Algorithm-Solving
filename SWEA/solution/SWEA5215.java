@@ -15,21 +15,21 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.io.FileInputStream;
 
-class Ingred {
-	int score;
-	int cal;
-	
-	public Ingred(int score, int cal) {
-		this.score = score;
-		this.cal = cal;
-	}
-
-	@Override
-	public String toString() {
-		return "Ingred [score=" + score + ", cal=" + cal + "]";
-	}
-	
-}
+//class Ingred {
+//	int score;
+//	int cal;
+//
+//	public Ingred(int score, int cal) {
+//		this.score = score;
+//		this.cal = cal;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return "Ingred [score=" + score + ", cal=" + cal + "]";
+//	}
+//
+//}
 
 public class SWEA5215 {
 	
