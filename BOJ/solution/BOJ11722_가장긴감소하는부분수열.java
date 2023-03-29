@@ -20,17 +20,18 @@ public class BOJ11722_가장긴감소하는부분수열 {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
 		d = new int[N];
-		d[0] = 1;
-		Arrays.fill(d,1);
+		Arrays.fill(d,1);	//초기값을 1로 지정(최소길이 1)
 		for(int i=1; i < N; i++) {
-			if(arr[i-1] > arr[i]) {
-				int max=0;
-				for(int j=0; j<=i;j++) {
-					d[i] = Math.max(max, d[j]) +1;
+			//나(i)보다 왼쪽 애들 중에서 값이 더 큰 애가 있다면,
+			for (int j = 0; j <= i-1; j++) {
+				if(arr[j] > arr[i]) {
+					//그 d값에 +1 한 값과 내 현재 d값을 비교해서 갱신한다
+					d[i] = Math.max(d[j]+1,d[i]);
 				}
 			}
 			System.out.println(Arrays.toString(d));
 		}
+		Arrays.sort(d);
 		System.out.println(d[N-1]);
 		
 	}
