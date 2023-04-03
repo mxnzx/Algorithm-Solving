@@ -50,44 +50,42 @@ public class SWEA4193_수영대회 {
 			end = new Point(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));		//도착점
 			
 			v[start.r][start.c] = true;
-			dfs(start,0);
-			sb.append("#").append(tc).append(" ").append(min).append("\n");
-		
-			System.out.println();
-			
+			//dfs(start,0);
+			sb.append("#").append(tc).append(" ").append(min).append("\n");			
 		}
 		System.out.println(sb);
 		
 	}
 
-	private static void dfs(Point p, int cnt) {
-
-		//기저조건
-		if(p.r == end.r && p.c == end.c) {
-			min = Math.min(min, cnt);
-			return;
-		}
-		
-		for (int d = 0; d < 5; d++) {
-			int nr = p.r + dr[d];
-			int nc = p.c + dc[d];
-			if(nr<0 || nr>= N || nc<0 || nc>= N || v[nr][nc] || map[nr][nc] == 1) continue;
-
-			//cnt가 2 5 8  .. => cnt % 3 == 2 일때 map[][]==2 도 통과할 수 있음 -> 반대인 경우를 넘긴다 
-			if(cnt % 3 != 2 && map[nr][nc] == 2) continue;
-			
-			System.out.println(p.r + " " + p.c + " =>" +cnt);
-			//map[nr][nc] == 0 이거나 cnt%3이 2일 때 맵값이 2인 애들만 넘어온다
-			//여기서 첫번째테케 cnt=2 일때 타야되는데 안타고 컨티뉴됨 왜 ?????????????
-			if(cnt % 3 == 2 && map[nr][nc]==2) System.out.println("aa" + cnt); 
-			v[nr][nc] = true;
-			dfs(new Point(nr, nc),cnt+1);
-			v[nr][nc] = false;
-		}
-		
-		
-		
-		
-	}
+//	private static void dfs(Point p, int cnt) {
+//
+//		//기저조건
+//		if(p.r == end.r && p.c == end.c) {
+//			min = Math.min(min, cnt);
+//			System.out.println( cnt+"("+p.r + "," + p.c + ")" );
+//			return;
+//		}
+//		
+//		for (int d = 0; d < 5; d++) {
+//			int nr = p.r + dr[d];
+//			int nc = p.c + dc[d];
+//			int ncnt=cnt;
+//			if(nr<0 || nr>= N || nc<0 || nc>= N || v[nr][nc] || map[nr][nc] == 1) continue;
+//
+//			//cnt가 2 5 8  .. => cnt % 3 == 2 일때 map[][]==2 도 통과할 수 있음 -> 반대인 경우를 넘긴다 
+//			//다음값이 2일때랑 아닐 때를 구분한다
+//			if(map[nr][nc] == 2)  {
+//
+//				if(cnt % 3 == 2) ncnt = cnt+1; 
+//				else if(cnt % 3 == 1) ncnt =cnt+2;
+//				else if(cnt % 3 == 0) ncnt =cnt+3;		
+//			} else {
+//				ncnt = cnt+1;
+//			}
+//			v[nr][nc] = true;
+//			dfs(new Point(nr, nc),ncnt);
+//			v[nr][nc] = false;				
+//		}
+//	}
 
 }
