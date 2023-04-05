@@ -89,7 +89,7 @@ public class SWEA7793_오나의여신님 {
 
                 if(nr<0 || nr>=N || nc<0 || nc>=M) continue;
 
-                //물일때 + 다음이 돌도 도착도 아니면
+                //악마일때 + 다음이 돌도 도착도 아니면
                 if(p.val == '*' && map[nr][nc] != 'X' && map[nr][nc] != 'D' && map[nr][nc] != '*') {
                     map[nr][nc] = '*';
                     q.add(new Point(nr,nc,'*'));
