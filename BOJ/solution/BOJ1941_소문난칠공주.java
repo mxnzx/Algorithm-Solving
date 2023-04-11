@@ -20,16 +20,18 @@ public class BOJ1941_소문난칠공주 {
 	}
 	static int res;
 	static char[][] map;
+	static boolean[][] v;
 	static int[] dr = {-1,1,0,0};
 	static int[] dc = {0,0,-1,1};
 	static ArrayList<Pos> som;
 	public static void main(String[] args) throws IOException {
 		//S를 먼저 찾아서 7개를 모은다
 		//-> 중간에 Y가 4개 이상되면 리턴,
-		//그럼 도착했을 때 무조건 되는애들이니까 그냥 카운팅하자
+		//그럼 도착했을 때 무조건 되는애들이니까 그냥 카운팅하자 -> 중복되는 경우 다음애는 이전것을 선택못하게 함
 		System.setIn(new FileInputStream("input.txt"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		map = new char[5][5];
+		v= new boolean[5][5];
 		som = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
 			String str = br.readLine();
@@ -38,10 +40,12 @@ public class BOJ1941_소문난칠공주 {
 				if(map[i][j] == 'S') som.add(new Pos(i,j));
 			}
 		}
+
 		
-		
+		System.out.println(res);
 		
 
 	}
+
 
 }
