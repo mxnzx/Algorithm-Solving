@@ -3,22 +3,28 @@ package solution;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class BOJ2665_미로만들기 {
 
-	static int n;
+	static int n, ans=0;
 	static int[][] map, dist;
 	static boolean[][] v;
+	static int[] dr = {-1,1,0,0};
+	static int[] dc = {0,0,-1,1};
 	static class Point {
-		int r,c;
+		int r,c,w;
 
-		public Point(int r, int c) {
+		public Point(int r, int c,int w) {
 			super();
 			this.r = r;
 			this.c = c;
+			this.w = w;
 		}
-		
+
+		public int getW() {
+			return w;
+		}
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -36,21 +42,48 @@ public class BOJ2665_미로만들기 {
 		}
 		//다익스트라 실행
 		v = new boolean[n][n];
-		
-		PriorityQueue<Point> pq = new PriorityQueue<>();
-		pq.add(new Point(0, 0));
+		dist = new int[n][n];
+		for(int[] d : dist) {
+			Arrays.fill(d, Integer.MAX_VALUE);
+		}
+		dist[0][0] = 0;
+
+		PriorityQueue<Point> pq = new PriorityQueue<>(Comparator.comparing(Point::getW));
+		pq.add(new Point(0, 0, 0));
 		v[0][0] = true;
-		
+
+		int minDist;
 		while(!pq.isEmpty()) {
 			Point p = pq.poll();
-			Point minNode = p;
-			int mindist = 0;
-			
-			
-			
+			minDist = p.w;
+
+			if(p.r == n-1 && p.c == n-1) {
+				ans = minDist;
+				break;
+			}
+			for (int d = 0; d < 4; d++) {
+				int nr = p.r + dr[d];
+				int nc = p.c + dc[d];
+
+				if(nr<0 || nr>= n || nc<0 || nc>=n || v[nr][nc]) continue;
+
+				int next;
+				if(map[nr][nc] == 0) next=1;	//다음이 벽이면 1의 값을 주자
+				else next = 0;
+
+				if(dist[nr][nc] > minDist + next) {
+					dist[nr][nc] = minDist + next;
+					v[nr][nc] = true;
+					pq.add(new Point(nr,nc,dist[nr][nc]));
+				}
+			}
 		}
-		
-		
+
+		for(int[] d: dist){
+			System.out.println(Arrays.toString(d));
+		}
+		//출력
+		System.out.println(ans);
 
 	}
 
