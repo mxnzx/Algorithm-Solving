@@ -78,10 +78,6 @@ public class BOJ2665_미로만들기 {
 				}
 			}
 		}
-
-		for(int[] d: dist){
-			System.out.println(Arrays.toString(d));
-		}
 		//출력
 		System.out.println(ans);
 
