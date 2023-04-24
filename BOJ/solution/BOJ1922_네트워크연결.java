@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+
 public class BOJ1922_네트워크연결 {
     static class Node {
         int node, cost;
