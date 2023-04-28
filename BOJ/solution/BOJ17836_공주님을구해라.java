@@ -33,7 +33,6 @@ public class BOJ17836_공주님을구해라 {
 
     public static void main(String[] args) throws IOException {
         // 도달할수있는 최단거리 - bfs
-        // 먹고 가는 경우와 안먹고 가는 경우를 두개 나누어서 계산한다 -> 방문배열 3차원!
         // 중간에 하다가 T가 되면 Fail
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -65,35 +64,50 @@ public class BOJ17836_공주님을구해라 {
         Queue<Point> q = new LinkedList<>();
         q.add(new Point(0, 0, 0));
         v[0][0] = true;
+        int tmpDist = 0;
 
         while(!q.isEmpty()) {
             Point p = q.poll();
             int val = map[p.r][p.c];    //현재 맵 값
 
-            //T시간 확인
-            if(p.cnt > T) return 0;
-            // 목적지 도착 했을 때
-            if(p.r == N-1 && p.c == M-1) return p.cnt;
-            //만약 현재 맵값이 2이면 지금 자리 cnt 와 남은 맨해튼 거리값을 더한게 최솟값이다
+            
+            //만약 현재 맵값이 2이면 지금 자리 cnt 와 남은 맨해튼 거리값을 더한게 최솟값 후보이다
             if(val == 2) {
                 int dist = (N-1 - p.r) + (M-1 -p.c) + p.cnt;
-                if(dist <= T) return dist;
-                else return 0;
+                if(dist <= T)  tmpDist = dist;
+               // System.out.println("tmpDist    " + tmpDist);
+            }
+            
+            //T시간 확인
+            if(p.cnt > T) {
+            	if(tmpDist != 0) return tmpDist;
+            	return 0;
+            }
+
+            // 목적지 도착 했을 때
+            if(p.r == N-1 && p.c == M-1) {
+            	if(tmpDist != 0) {	//tmp에 값이 갱신이 되었다면
+                	int dist = Math.min(tmpDist, p.cnt);
+                	//System.out.println("dist  " + dist);
+                	return dist;
+            	}
+            	return p.cnt;
             }
 
             for (int d = 0; d < 4; d++) {
                 int nr = p.r + dr[d];
                 int nc = p.c + dc[d];
 
-
+                
                 if(nr<0 || nr>=N || nc<0 || nc>=M || v[nr][nc] || map[nr][nc] == 1) continue;
 
-                //System.out.println(nr + " " + nc + " " +(p.cnt+1));
+               // System.out.println(nr + " " + nc + " " +(p.cnt+1));
                 v[nr][nc] = true;
                 q.add(new Point(nr,nc,p.cnt+1));
 
             }
         }
-        return 0;
+        //그람없이 목적지까지 못간다면 tmpDist 내보낸다
+        return tmpDist;
     }
 }
