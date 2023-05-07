@@ -1,3 +1,5 @@
+//이전 경로를 담아오려면 parents 을 따로 만들어 값을 이어이어 넣고, 나중에 스택에 넣고 빼면 굳굳
+
 package solution;
 
 import java.io.BufferedReader;
@@ -14,7 +16,7 @@ public class BOJ13913_숨바꼭질4 {
             this.cnt = cnt;
         }
     }
-    static int[] dist;
+    static int[] parents;
     static boolean[] v;
     static int N, K;
 
@@ -24,7 +26,7 @@ public class BOJ13913_숨바꼭질4 {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());   //동생
 
-        dist = new int[100001];
+        parents = new int[100001];
         v = new boolean[100001];
 
         bfs();
@@ -35,30 +37,51 @@ public class BOJ13913_숨바꼭질4 {
         q.add(new Node(N, 0));
         v[N] = true;
 
-        ArrayList<Integer> alist = new ArrayList<>();
-
         while(!q.isEmpty()) {
             Node p = q.poll();
 
-
+            //목표점에 도착했으면 값을 출력
             if(p.node == K) {
+                searchPath();   //이전경로 담아오기
                 System.out.println(p.cnt);
-                System.out.println(alist);
+                while(!s.isEmpty())
+                    System.out.print(s.pop() + " ");
+
                 return;
             }
 
             //x-1 일때
             int next = p.node - 1;
-            if(next<0 || next > 100000 || v[next]) continue;
-            q.add(new Node(next, p.cnt+1));
+            if(next>=0 && !v[next]) {
+                q.add(new Node(next, p.cnt + 1));
+                v[next]=true;
+                parents[next] = p.node;
+            }
             //x+1 일때
             next = p.node + 1;
-            if(next<0 || next > 100000 || v[next]) continue;
-            q.add(new Node(next, p.cnt+1));
+            if(next <= 100000 && !v[next]) {
+                q.add(new Node(next, p.cnt+1));
+                v[next]=true;
+                parents[next] = p.node;
+            }
             //2*x 일때
             next = p.node * 2;
-            if(next<0 || next > 100000 || v[next]) continue;
-            q.add(new Node(next, p.cnt+1));
+            if(next <= 100000 && !v[next]) {
+                q.add(new Node(next, p.cnt + 1));
+                v[next]=true;
+                parents[next] = p.node;
+            }
+        }
+    }
+    static Stack<Integer> s = new Stack<>();
+    private static void searchPath() {
+        s.push(K);
+        int next = K;
+        while(true) {
+            if(next == N) return;
+            int before = parents[next];
+            s.push(before);
+            next = before;
         }
     }
 }
