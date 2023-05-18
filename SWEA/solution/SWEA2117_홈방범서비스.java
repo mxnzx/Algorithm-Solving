@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -14,7 +13,7 @@ public class SWEA2117_홈방범서비스 {
     static boolean[][] v;
     static int T, N, M, res;
     static int[] dr = {-1,1,0,0};
-    static int[] dc = {0,0,-1스,1};
+    static int[] dc = {0,0,-1,1};
     static StringBuilder sb;
     static class Node {
         int r,c;
