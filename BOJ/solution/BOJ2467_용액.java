@@ -34,22 +34,44 @@ public class BOJ2467_용액 {
             return;
         }
         //두 부호가 다 있을 때는 하나씩 비교해봐야 안다
+        //투포인터
         int s = 0, e = N-1;
         int sum, min = Integer.MAX_VALUE, minIdx1=-1, minIdx2=-1;
-        while(s!=e) {
-            sum = arr[s] + arr[e];
-            if(min > Math.abs(sum)) {
-                min = Math.abs(sum);
-                if(min == 0) {
-                    System.out.println(arr[s] + " "+ arr[e]);
-                    System.exit(0);
+//        while(s!=e) {
+//            sum = arr[s] + arr[e];
+//            if(min > Math.abs(sum)) {
+//                min = Math.abs(sum);
+//                if(min == 0) {
+//                    System.out.println(arr[s] + " "+ arr[e]);
+//                    System.exit(0);
+//                }
+//                minIdx1 = s;
+//                minIdx2 = e;
+//            }
+//            if(sum>0) e -= 1;
+//            if(sum<0) s += 1;
+//        }
+        //이분탐색 - arr[i]*(-1) 과 가장 가까운 수를 찾아나선다
+        for (int i = 0; i < N-1; i++) {
+            s = i+1;
+            e = N-1;
+            while(s<=e) {
+                int mid = (s+e)/2;
+                sum = Math.abs(arr[i] + arr[mid]);
+                if(min>sum) {
+                    min = sum;
+                    minIdx1 = i;
+                    minIdx2 = mid;
                 }
-                minIdx1 = s;
-                minIdx2 = e;
+                if(arr[mid] >= -arr[i]) {
+                    e = mid-1;
+                } else {
+                    s = mid+1;
+                }
             }
-            if(sum>0) e -= 1;
-            if(sum<0) s += 1;
         }
+
+
         System.out.println(arr[minIdx1] + " " + arr[minIdx2]);
     }
 
