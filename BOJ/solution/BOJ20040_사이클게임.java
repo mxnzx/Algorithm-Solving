@@ -24,28 +24,25 @@ public class BOJ20040_사이클게임 {
             st = new StringTokenizer(br.readLine());
             a = Integer.parseInt(st.nextToken());
             b = Integer.parseInt(st.nextToken());
-            if(find(a) != find(b)) union(a,b);      //사이클이 발생안하면 합치고 아니면 중단
-            else {
+            if(union(a,b)) {
                 Ans = i;
                 break;
             }
-            System.out.println(i + " " + Arrays.toString(parents));
         }
         System.out.println(Ans);
     }
 
-    private static void union(int a, int b) {
+    private static boolean union(int a, int b) {
         int pa = find(a);
         int pb = find(b);
 
-        if(pa<pb) parents[pb] = pa;
-        else parents[pa] = pb;
-
+        if(pa == pb) return true;   //둘이 같으면 true 리턴(사이클발생)
+        parents[pa] = pb;
+        return false;
     }
 
     private static int find(int b) {
         if(parents[b] == b) return b;
         return parents[b] = find(parents[b]);
     }
-
 }
