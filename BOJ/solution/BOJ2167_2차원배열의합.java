@@ -29,7 +29,7 @@ public class BOJ2167_2차원배열의합 {
             }
         }
         K = Integer.parseInt(br.readLine());
-        int i,j,x,y,result=0;
+        int i,j,x,y,result;
         for (int k = 0; k < K; k++) {
             st = new StringTokenizer(br.readLine());
             i = Integer.parseInt(st.nextToken());
@@ -37,24 +37,9 @@ public class BOJ2167_2차원배열의합 {
             x = Integer.parseInt(st.nextToken());
             y = Integer.parseInt(st.nextToken());
 
-            result = sumMap[x][y] - sumMap[i-1][j] - sumMap[i][j-1] + sumMap[i-1][j-1];
+            result = sumMap[x][y] - sumMap[x][j-1] - sumMap[i-1][y] + sumMap[i-1][j-1];
             sb.append(result).append("\n");
         }
         System.out.println(sb);
-
-
     }
 }
-
-/*
-0 0 0 0
-0 1 2 4
-0 8 16 32
-0 1 2 4
-(i,j) (x,y)
-
-0 0 0 0
-0 1 3 7
-0 9 27 63
-0 10 30 70
- */
