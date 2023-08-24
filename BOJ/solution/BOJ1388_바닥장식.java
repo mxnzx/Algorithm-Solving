@@ -9,8 +9,6 @@ public class BOJ1388_바닥장식 {
     static int N, M;
     static char[][] map;
     static boolean[][] visited;
-    static int[] dr = {-1,1,0,0};
-    static int[] dc = {0,0,-1,1};
     static int result;
 
     public static void main(String[] args) throws IOException {
