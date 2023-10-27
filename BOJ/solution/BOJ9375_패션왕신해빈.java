@@ -1,3 +1,9 @@
+/*
+Map에 values()라는 메서드 존재한다!
+이는 해당 맵을 순환하면서 값을 하나씩 꺼내줄 수 있다.
+신기하군,,, 처음알았다
+ */
+
 package solution;
 
 import java.io.BufferedReader;
@@ -11,13 +17,6 @@ public class BOJ9375_패션왕신해빈 {
     static int T, N;
     static Map<String, Integer> clothes;
     public static void main(String[] args) throws IOException {
-        /*
-        의상 이름, 의상 종류
-        종류 중에 하나를 선택 하거나 / 안하거나
-        부분집합
-        공집합 제외
-        종류를 인덱스로, 값을 하나씩 증가
-         */
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -30,15 +29,19 @@ public class BOJ9375_패션왕신해빈 {
                 st = new StringTokenizer(br.readLine());
                 String value = st.nextToken();
                 String key = st.nextToken();
-                if(clothes.containsKey(key)) {
-                    clothes.put(key,clothes.get(key)+1);
+                if (clothes.containsKey(key)) {
+                    clothes.put(key, clothes.get(key) + 1);
                 } else {
-                    clothes.put(key,1);
+                    clothes.put(key, 1);
                 }
             }
-            System.out.println(clothes.size());
+
+            int ans = 1;
+            for (int value : clothes.values()) {
+                ans *= value + 1;
+            }
+            sb.append(ans-1).append("\n");
         }
-
-
+        System.out.println(sb);
     }
 }
