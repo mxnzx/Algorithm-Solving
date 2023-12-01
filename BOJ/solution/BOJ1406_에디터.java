@@ -8,7 +8,6 @@ import java.util.*;
 public class BOJ1406_에디터 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
         StringBuilder sb = new StringBuilder();
         String init = br.readLine();
         Stack<Character> leftStack = new Stack<>();
