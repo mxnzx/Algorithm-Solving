@@ -30,12 +30,10 @@ public class BOJ1654_랜선자르기 {
         long left = 1, right = lines[K-1];
         long mid = (left + right) / 2;    // 랜선 길이
         while(left <= right) {
-            System.out.println(left  + " " + mid + " " + right);
             long cutLineCnt = 0;
             for (int i = 0; i < K; i++) {
                 cutLineCnt += lines[i] / mid;
             }
-            System.out.println(cutLineCnt);
             if(cutLineCnt < N) {
                 right = mid-1;
             } else {
