@@ -14,95 +14,64 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ2206_벽부수고이동하기 {
-	static class Loc{
-		int r;
-		int c;
-		int cnt;
-		int puk;
-		
-		public Loc(int r, int c, int cnt, int puk) {
-			super();
+	static class Node {
+		int r, c, cnt, isBroken;
+
+		Node(int r, int c, int cnt, int isBroken) {
 			this.r = r;
 			this.c = c;
 			this.cnt = cnt;
-			this.puk = puk;
+			this.isBroken = isBroken;
 		}
-		
 	}
 
-	static int N, M, Ans;
+	static int N, M;
 	static int[][] map;
-	static boolean[][][] v; // 방문배열
-	static int[] dr = { -1, 1, 0, 0 };
-	static int[] dc = { 0, 0, 1, -1 };
-
+	static boolean[][][] visited;
+	static final int[] dr = {-1, 1, 0, 0};
+	static final int[] dc = {0, 0, -1, 1};
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-
-		st = new StringTokenizer(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-
 		map = new int[N][M];
-		v = new boolean[N][M][2];		//맨 뒤: 같은 위치여도 부수고 왔는지 안부수고 왔는지 구분하기 위한 구분자
-		Ans = Integer.MAX_VALUE;
-
+		visited = new boolean[N][M][2];
 		for (int i = 0; i < N; i++) {
-			String str = br.readLine();
+			String input = br.readLine();
 			for (int j = 0; j < M; j++) {
-				map[i][j] = str.charAt(j) - '0';
+				map[i][j] = input.charAt(j) - '0';
 			}
 		}
-		// 0이 이동 가능 1이 벽
-		// 최단경로? BFS?
-		// 중간에 벽 하나 부실 수 있다 -> 뭘 부실래? 몰라 ! 하나씩 다 해봐 -> DFS? -> 시간초과뜸
-		bfs();
+		System.out.println(bfs(0, 0));
 
 	}
-	
-	//방문배열을 3차원으로 준다 -> 벽을 부수었을때와 아닐때를 다른 방문배열을 사용한다
-	private static void bfs() {
-		 Queue<Loc> q = new LinkedList<>();
-		 //0,0부터 시작. cnt는 1부터. 벽 안부수었으면 0
-		 q.offer(new Loc(0,0,1,0));
 
-		 while(!q.isEmpty()) {
+	private static int bfs(int r, int c) {
+		Queue<Node> q = new LinkedList<>();
+		q.add(new Node(r,c,1, 0));
+		visited[r][c][0] = true;
+		while(!q.isEmpty()) {
+			Node current = q.poll();
 
-			 Loc p = q.poll();
+			if(current.r==N-1 && current.c == M-1) return current.cnt;
 
-			 if(p.r == N-1 && p.c == M-1){
-				 System.out.println(p.cnt);
-				 return;
-			 }
+			for (int d = 0; d < 4; d++) {
+				int nr = current.r + dr[d];
+				int nc = current.c + dc[d];
+				if(nr<0 || nr>=N || nc<0 || nc >= M || visited[nr][nc][current.isBroken]) continue;
 
-			 for (int d = 0; d < 4; d++) {
-				 int nr = p.r + dr[d];
-				 int nc = p.c + dc[d];
-				 int npuk = p.puk;
-
-				 if(nr<0 || nr>=N || nc<0 || nc>=M) continue;
-
-				 //벽을 부수지 않고 이동하는 경우
-				 if(map[nr][nc] == 0 && !v[nr][nc][npuk]) {
-					 v[nr][nc][npuk] = true;
-					 q.offer(new Loc(nr,nc,p.cnt+1,npuk));
-				 }
-				//벽을 부수고 이동하는 경우 v[nr][nc][npuk] 의 방문유무를 체크할 필요가 왜 없지? 어차피 1이라서 못갔을 것이기 때문에? ㅇㅇ
-				 else if(map[nr][nc] == 1 && npuk == 0) { 
-					 v[nr][nc][1] = true;
-					 q.offer(new Loc(nr,nc,p.cnt+1,1));
-				 }
-			 }
-
-
-		 }
-		System.out.println(-1);
-
+				if(map[nr][nc] == 0) {
+					q.add(new Node(nr, nc, current.cnt+1, current.isBroken));
+					visited[nr][nc][current.isBroken] = true;
+				}
+				if(current.isBroken == 0 && map[nr][nc] == 1) {
+					q.add(new Node(nr, nc, current.cnt+1, 1));
+					visited[nr][nc][1] = true;
+				}
+			}
+		}
+		return -1;
 	}
-	
-
-	
-
 }
