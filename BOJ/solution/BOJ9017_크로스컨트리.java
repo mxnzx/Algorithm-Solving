@@ -47,8 +47,6 @@ public class BOJ9017_크로스컨트리 {
                 int n = Integer.parseInt(st.nextToken());
                 if(team.get(n) == 6) newInput[idx++] = n;
             }
-            System.out.println(Arrays.toString(newInput));
-
             // 6명 안 들어온 팀 제거했고, 이제 점수 매겨서 player배열에 기입한다
             for (int i = 1; i <= N ; i++) {
                 if(newInput[i] == 0) break;
@@ -59,9 +57,6 @@ public class BOJ9017_크로스컨트리 {
                     }
                 }
             }
-//            for (int i = 1; i <= 200; i++) {
-//                System.out.println(Arrays.toString(players[i]));
-//            }
             // min 값 구한다.
             int minTeam = 0;
             int minScore = Integer.MAX_VALUE;
