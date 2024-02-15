@@ -3,14 +3,13 @@ package solution;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class BOJ1021_회전하는큐 {
     static int N, M, cnt;
-    static Deque<Integer> dq;
+    static LinkedList<Integer> dq;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
