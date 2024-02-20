@@ -46,9 +46,7 @@ public class BOJ17484_진우의달여행 {
                 return;
             }
 
-            cnt += map[nr][nc];
-            dfs(nr, nc, d, cnt);
-            cnt -= map[nr][nc];
+            dfs(nr, nc, d, cnt+map[nr][nc]);
         }
     }
 }
