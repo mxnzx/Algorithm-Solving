@@ -40,8 +40,8 @@ public class BOJ20310_타노스 {
         }
 
         char[] arr = S.toCharArray();
-        for (int i = 0; i < idxArr.length; i++) {
-            arr[idxArr[i]] = '2';
+        for (int j : idxArr) {
+            arr[j] = '2';
         }
 
         StringBuilder sb= new StringBuilder();
