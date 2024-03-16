@@ -12,48 +12,59 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ14889_스타트와링크 {
-    static int N, Ans=Integer.MAX_VALUE;
-    static int[][] map; //입력 능력치
-    static int[] team;
+    static int N;
+    static int[][] power;
+    static int answer = Integer.MAX_VALUE;
+    static boolean[] dividedTeam;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-
         N = Integer.parseInt(br.readLine());
-        map = new int[N][N];
-        team = new int[N];
+        power = new int[N][N];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                power[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        //팀인덱스 0~N-1까지 N/2로 나누어야함
-        comb(0,0);
-
-        System.out.println(Ans);
+        // 두 팀의 능력치를 각각 더하고, 그 두 팀의 능력치의 최솟값을 구한다, => 완탐
+        // 6명이라고 했을 때 3 3 나눠야함. 어캐 나눌래? -> 부분 집합, 중복순열
+        // true false 로 나눠놓고, 더한다
+        dividedTeam = new boolean[N];
+        dividedTeam[0] = true;  //첫번째를 무조건 1번팀에 속한다고 해놓고 시작한다.(계산을 반으로 줄이기 위함)
+        divideTeam(1, 1);
+        System.out.println(answer);
     }
-    private static void comb(int idx,int k){
-        if(k == N/2) {
-            cal();
+
+    private static void divideTeam(int pick, int idx) {
+
+        if (pick == N / 2) {
+            sumPowerByTeam();
+            //System.out.println(Arrays.toString(dividedTeam));
             return;
         }
-        //인덱스의 반만 1을 넣겠다
-        for (int i = idx; i < N; i++) {
-            team[i]=1;
-            comb(i+1,k+1);
-            team[i]=0;
-        }
+
+        if (idx == N) return;
+
+        //뽑은 경우
+        dividedTeam[idx] = true;
+        divideTeam(pick + 1, idx + 1);
+        //뽑지 않은 경우
+        dividedTeam[idx] = false;
+        divideTeam(pick, idx + 1);
+
     }
 
-    private static void cal() {
-        int team0=0, team1=0;
+    private static void sumPowerByTeam() {
+        int team1 = 0, team2 = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if(team[i] == 0 && team[j] == 0) team0 += map[i][j];
-                if(team[i] == 1 && team[j] == 1) team1 += map[i][j];
+                if (i == j) continue;
+                if (dividedTeam[i] && dividedTeam[j]) team1 += power[i][j];
+                if (!dividedTeam[i] && !dividedTeam[j]) team2 += power[i][j];
             }
         }
-        Ans = Math.min(Ans, Math.abs(team0-team1));
+        answer = Math.min(Math.abs(team1 - team2), answer);
     }
 }
