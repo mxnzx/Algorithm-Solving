@@ -9,7 +9,7 @@ public class BOJ9657_돌게임3 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         //System.out.println(N % 7 == 0 || N % 7 == 2 ? "CY" : "SK");
-        boolean[] isWin = new boolean[N+1];
+        boolean[] isWin = new boolean[1001];
         isWin[0] = false;
         isWin[1] = true;
         isWin[2] = false;
