@@ -3,6 +3,8 @@ package solution;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Stack;
 
 public class BOJ5397_키로거 {
@@ -20,31 +22,31 @@ public class BOJ5397_키로거 {
     }
 
     private static void solution(String input) {
-        int cursor = 0;
-        Stack<Character> front = new Stack<>();
-        Stack<Character> back = new Stack<>();
+        LinkedList<Character> list = new LinkedList<>();
+        //커서의 위치를 가리킴. 요소를 순차적으로 읽거나 추가, 수정, 삭제 가능한 양방향 반복자
+        ListIterator<Character> iter = list.listIterator();
 
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             switch (c){
                 case '-':
-                    if(!front.empty()) front.pop();
+                    if(!iter.hasPrevious()) continue;
+                    iter.previous();
+                    iter.remove();
                     break;
                 case '<':
-                    if(!front.empty()) back.push(front.pop());
+                    if(iter.hasPrevious()) iter.previous();
                     break;
                 case '>':
-                    if(!back.empty()) front.push(back.pop());
+                    if(iter.hasNext()) iter.next();
                     break;
                 default:
-                    front.push(c);
+                    iter.add(c);
                     break;
             }
+            //System.out.println(iter);
         }
-        while(!back.empty()) {
-            front.push(back.pop());
-        }
-        for(Character c : front) {
+        for(Character c : list) {
             answer.append(c);
         }
         answer.append("\n");
