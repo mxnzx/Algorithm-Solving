@@ -3,9 +3,7 @@ package solution;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Stack;
+import java.util.*;
 
 public class BOJ5397_키로거 {
     static StringBuilder answer = new StringBuilder();
@@ -22,31 +20,28 @@ public class BOJ5397_키로거 {
     }
 
     private static void solution(String input) {
-        LinkedList<Character> list = new LinkedList<>();
-        //커서의 위치를 가리킴. 요소를 순차적으로 읽거나 추가, 수정, 삭제 가능한 양방향 반복자
-        ListIterator<Character> iter = list.listIterator();
-
+        List<Character> password = new LinkedList<>();
+        ListIterator<Character> cursor = password.listIterator();
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            switch (c){
+            switch (c) {
                 case '-':
-                    if(!iter.hasPrevious()) continue;
-                    iter.previous();
-                    iter.remove();
+                    if (!cursor.hasPrevious()) continue;
+                    cursor.previous();      //이전 요소로 이동 후 반환
+                    cursor.remove();        //반환된 마지막 요소를 제거함
                     break;
                 case '<':
-                    if(iter.hasPrevious()) iter.previous();
+                    if (cursor.hasPrevious()) cursor.previous();
                     break;
                 case '>':
-                    if(iter.hasNext()) iter.next();
+                    if (cursor.hasNext()) cursor.next();
                     break;
                 default:
-                    iter.add(c);
+                    cursor.add(c);      //현재 위치에 요소 추가
                     break;
             }
-            //System.out.println(iter);
         }
-        for(Character c : list) {
+        for(Character c : password) {
             answer.append(c);
         }
         answer.append("\n");
