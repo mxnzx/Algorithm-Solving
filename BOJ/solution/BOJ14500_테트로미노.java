@@ -31,14 +31,15 @@ public class BOJ14500_테트로미노 {
 			for (int j = 0; j < M; j++) {
 				visited[i][j] = true;
 				// 브루트포스 - dfs
-				dfs(i, j, 1, map[i][j], visited);
+				dfs(i, j, 1, map[i][j]);
 				visited[i][j] = false;
+				//해당 풀이가 떠오르지 않는다면, 아예 여기서 따로 comb 하나 더 먹이고 3개 찾아와도 됨. 별차이 없음.
 			}
 		}
 		System.out.println(max);
 	}
 
-	private static void dfs(int r, int c, int cnt, int sum, boolean[][] visited) {
+	private static void dfs(int r, int c, int cnt, int sum) {
 
 		if (cnt == 4) {
 			max = Math.max(max, sum);
@@ -52,8 +53,8 @@ public class BOJ14500_테트로미노 {
 			if (nr < 0 || nr >= N || nc < 0 || nc >= M || visited[nr][nc]) continue;
 			visited[nr][nc] = true;
 			//뻐큐 고려 - 현재 칸(r,c)에서 하나 더 선택한다
-			if (cnt == 2) dfs(r, c, cnt + 1, sum + map[nr][nc], visited);
-			dfs(nr, nc, cnt + 1, sum + map[nr][nc], visited);
+			if (cnt == 2) dfs(r, c, cnt + 1, sum + map[nr][nc]);
+			dfs(nr, nc, cnt + 1, sum + map[nr][nc]);
 			visited[nr][nc] = false;
 		}
 	}
