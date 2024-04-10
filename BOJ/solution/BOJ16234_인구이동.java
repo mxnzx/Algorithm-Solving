@@ -1,13 +1,8 @@
 //[BOJ]16234. 인구이동 - bfs
 package solution;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class BOJ16234_인구이동 {
     static class Loc {
@@ -42,7 +37,6 @@ public class BOJ16234_인구이동 {
     }
 
     private static void solution() {
-
         while(true) {
             visited = new boolean[N][N];
             boolean isMove = false;
@@ -61,13 +55,13 @@ public class BOJ16234_인구이동 {
 
     private static boolean bfs(int r, int c) {
         // 인구 이동이 있었는지 체크.
-        Queue<Solution.Loc> q = new LinkedList<>();
-        Queue<Solution.Loc> union = new LinkedList<>();
+        Queue<Loc> q = new LinkedList<>();
+        Queue<Loc> union = new LinkedList<>();
         visited[r][c] = true;
         int sum = 0;
-        q.add(new Solution.Loc(r,c));
+        q.add(new Loc(r,c));
         while(!q.isEmpty()) {
-            Solution.Loc cur = q.poll();
+            Loc cur = q.poll();
             union.add(cur);
             sum += map[cur.r][cur.c];
             for (int d = 0; d < 4; d++) {
@@ -77,7 +71,7 @@ public class BOJ16234_인구이동 {
                 if(nr<0 || nr >= N || nc<0 || nc>=N || visited[nr][nc]) continue;
                 int sub = Math.abs(map[nr][nc] - map[cur.r][cur.c]);
                 if(sub >= L && sub <= R) {
-                    Solution.Loc next = new Solution.Loc(nr, nc);
+                    Loc next = new Loc(nr, nc);
                     q.add(next);
                     visited[nr][nc] = true;
                 }
@@ -88,7 +82,7 @@ public class BOJ16234_인구이동 {
         // 갱신될 인구 수 계산
         int newCnt = sum / union.size();
         while(!union.isEmpty()) {
-            Solution.Loc loc = union.poll();
+            Loc loc = union.poll();
             map[loc.r][loc.c] = newCnt;
         }
         return true;
