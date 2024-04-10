@@ -10,29 +10,27 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ16234_인구이동 {
-    static class Point {
-        int r,c;
-
-        public Point(int r, int c) {
+    static class Loc {
+        int r;
+        int c;
+        Loc(int r, int c){
             this.r = r;
             this.c = c;
         }
     }
-    static int N,L,R,cnt=0;
+    static int N, L, R, dayCnt;
     static int[][] map;
-    static boolean[][] v;
-    static boolean doneUnion;    //인구이동이 안되는 플래그
-    static int[] dr = {-1,1,0,0};
-    static int[] dc = {0,0,-1,1};
+    static boolean[][] visited;
+    static final int[] dr= {-1,0,1,0};
+    static final int[] dc = {0,1,0,-1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        st = new StringTokenizer(br.readLine());
+        st= new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
-        L = Integer.parseInt(st.nextToken());   //최소
-        R = Integer.parseInt(st.nextToken());   //최대
-
+        L = Integer.parseInt(st.nextToken());
+        R = Integer.parseInt(st.nextToken());
         map = new int[N][N];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -40,65 +38,59 @@ public class BOJ16234_인구이동 {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+        solution();
+    }
+
+    private static void solution() {
 
         while(true) {
-            doneUnion = false;
-            v = new boolean[N][N];
+            visited = new boolean[N][N];
+            boolean isMove = false;
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-                    //돌면서 방문안한 애들 그룹 묶어 인구이동 시킨다
-                    if(!v[i][j]) {
-                        bfs(i,j);
-                    }
+                    if(visited[i][j]) continue;
+                    //3. 인구 이동이 있었는지 확인하고 온다. 있었으면 true;
+                    if(bfs(i,j)) isMove = true;
                 }
             }
-            if(!doneUnion) {    //인구이동이 이루어지지 않았으면 탈출
-                break;
-            } else {    //인구이동이 이루어졌으면 카운팅하고 다시 반복
-                cnt++;
-            }
+            if(!isMove) break;
+            dayCnt++;
         }
-        System.out.println(cnt);
+        System.out.println(dayCnt);
     }
-    private static void bfs(int r, int c) {
-        ArrayList<Point> union = new ArrayList<>();
-        Queue<Point> q = new LinkedList<>();
-        q.add(new Point(r,c));
 
-        v[r][c] = true;
+    private static boolean bfs(int r, int c) {
+        // 인구 이동이 있었는지 체크.
+        Queue<Solution.Loc> q = new LinkedList<>();
+        Queue<Solution.Loc> union = new LinkedList<>();
+        visited[r][c] = true;
+        int sum = 0;
+        q.add(new Solution.Loc(r,c));
         while(!q.isEmpty()) {
-            Point p = q.poll();
-            union.add(new Point(p.r, p.c)); //큐에서 꺼낸 애들은 인구이동이 이루어지므로 union에 담아줌
-
+            Solution.Loc cur = q.poll();
+            union.add(cur);
+            sum += map[cur.r][cur.c];
             for (int d = 0; d < 4; d++) {
-                int nr = p.r + dr[d];
-                int nc = p.c + dc[d];
+                int nr = cur.r + dr[d];
+                int nc = cur.c + dc[d];
 
-                if(nr<0 || nr>= N || nc<0 || nc>=N ||v[nr][nc]) continue;
-                int gap = Math.abs(map[p.r][p.c]-map[nr][nc]);
-                if(gap >= L && gap <= R) {
-                    q.add(new Point(nr,nc));
-                    v[nr][nc] = true;
+                if(nr<0 || nr >= N || nc<0 || nc>=N || visited[nr][nc]) continue;
+                int sub = Math.abs(map[nr][nc] - map[cur.r][cur.c]);
+                if(sub >= L && sub <= R) {
+                    Solution.Loc next = new Solution.Loc(nr, nc);
+                    q.add(next);
+                    visited[nr][nc] = true;
                 }
             }
         }
-        // 두 개 이상의 나라가 담겼으면 인구이동 시작한다
-        if(union.size()>=2) {
-            unionContury(union);
-            doneUnion=true;
-        }
-    }
-    private static void unionContury(ArrayList<Point> alist) {
-        double sum=0;
-        int n = alist.size();
+        if(union.size() < 2) return false;
 
-        for(Point p:alist) {
-            sum += map[p.r][p.c];
+        // 갱신될 인구 수 계산
+        int newCnt = sum / union.size();
+        while(!union.isEmpty()) {
+            Solution.Loc loc = union.poll();
+            map[loc.r][loc.c] = newCnt;
         }
-        int res = (int) Math.floor(sum / n);
-
-        for(Point p:alist) {
-            map[p.r][p.c] = res;
-        }
+        return true;
     }
 }
