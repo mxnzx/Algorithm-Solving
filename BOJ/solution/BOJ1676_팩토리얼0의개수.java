@@ -1,6 +1,5 @@
 package solution;
 
-import java.util.*;
 import java.io.*;
 
 public class BOJ1676_팩토리얼0의개수 {
@@ -11,7 +10,6 @@ public class BOJ1676_팩토리얼0의개수 {
         while(n >= 5) {
             cnt += n / 5;
             n /= 5;
-            System.out.println(n);
         }
         System.out.println(cnt);
     }
