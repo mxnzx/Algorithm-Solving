@@ -6,20 +6,24 @@ import java.util.*;
 public class BOJ1193_분수찾기 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        char[] n = br.readLine().toCharArray();
-        // 6,9만 교차가 가능하다: 하나로 본다
-        System.out.println(solution(n));
-
-    }
-    static int solution(char[] input) {
-        int[] num = new int[9];
-        for(char c : input) {
-            int n = c - '0';
-            if(n == 9) n = 6;
-            num[n]++;
+        int x = Integer.parseInt(br.readLine());    //천만
+        int group = 1;
+        int start = 1, end = 1;
+        while(true) {
+            if(x >= start && x <= end) {
+                break;
+            }
+            group++;
+            start = end + 1;
+            end = start + group - 1;
         }
-        num[6] = (num[6] % 2 == 0) ? num[6] / 2 : num[6] / 2 + 1;
-        Arrays.sort(num);
-        return num[num.length - 1];
+
+        int a = x - start + 1;
+        int b = group - (x - start);
+        System.out.println(group % 2 == 0 ? a+ "/"+ b : b + "/" + a);
+
+
+
+
     }
 }
