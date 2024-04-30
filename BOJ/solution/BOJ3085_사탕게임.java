@@ -5,7 +5,6 @@ import java.io.*;
 public class BOJ3085_사탕게임 {
     static int n, max = 1;
     static char[][] map;
-    static int[] dr = {1, 0}, dc = {0, 1};
 
     // 사탕의 최대 개수를 계산하는 메소드
     static void countCandies() {
