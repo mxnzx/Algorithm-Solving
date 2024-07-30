@@ -7,67 +7,48 @@ public class BOJ6198_옥상정원꾸미기 {
     static class Building {
         int idx;
         int height;
-        int watchCnt;
 
         Building(int idx, int height) {
-            this.idx= idx;
+            this.idx = idx;
             this.height = height;
-        }
-
-        @Override
-        public String toString() {
-            return "Building{" +
-                    "idx=" + idx +
-                    ", height=" + height +
-                    ", watchCnt=" + watchCnt +
-                    '}';
         }
     }
 
-    static int N;
-    static long totalCnt;
-    static Building[] buildings;
-
-    static Stack<Building> checked;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        buildings = new Building[N];
-        checked = new Stack<>();
+        int N = Integer.parseInt(br.readLine());
+        Stack<Building> buildings = new Stack<>();
+        Stack<Building> stack = new Stack<>();
+        long[] cnt = new long[N+1];
         for (int i = 0; i < N; i++) {
-            // i: 인덱스  val:빌딩높이
-            buildings[i] = new Building(i, Integer.parseInt(br.readLine()));
+            buildings.add(new Building(i + 1, Integer.parseInt(br.readLine())));
         }
-        for (int i = N - 1; i >= 0; i--) {
-            Building now = buildings[i];
-            if (checked.empty()) {
-                checked.push(now);
-                continue;
-            }
 
-            int cnt = 0;
-            while (!checked.empty()) {
-                // 스택에서 하나 꺼내어 next 라고 둔다.
-                Building next = checked.pop();
-                // 내 앞이 막혔다면, 일단 다시 그 빌딩을 스택에 넣고 멈춘다.
-                if (now.height <= next.height) {
-                    checked.push(next);
+        while(!buildings.isEmpty()) {
+            Building now = buildings.pop();
+            long tmpCnt = 0;
+
+            while(!stack.empty()) {
+                Building other = stack.peek();
+                // 현재 높이가 더 크면 기존꺼 스택에서 빼고, 현재 볼수 있는 건물 카운팅 갱신
+                if(now.height > other.height) {
+                    // 기존 other가 볼 수 있었던 cnt수에 본인(+1)까지 카운팅한다.
+                    tmpCnt += cnt[other.idx] + 1;
+                    stack.pop();
+                } else {
+                    // 현재 높이가 작거나 같으면 벗어난다.
                     break;
                 }
-                // 내가 만약 더 크다면, 임시 변수인 cnt에 next가 볼수있는 개수와 next 자신까지 더하고 그 다음껀 되나 안되나 확인하러 반복문을 다시 돌린다.
-                if (now.height > next.height) {
-                    cnt += next.watchCnt + 1;
-                }
-
             }
-            now.watchCnt = cnt;
-            checked.push(now);
+            stack.push(now);
+            cnt[now.idx] = tmpCnt;
         }
 
-        for(Building b: buildings) {
-            totalCnt += b.watchCnt;
+        long ans = 0;
+        for(long n : cnt) {
+            ans += n;
         }
-        System.out.println(totalCnt);
+
+        System.out.println(ans);
     }
 }
